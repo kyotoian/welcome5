@@ -1,0 +1,30 @@
+.post-box {
+  background-image: url("https://img.marieclairekorea.com/2021/09/mck_61511b0e0fb86.jpg");
+  background-position: center;
+  background-size: cover;
+  height: 400px;
+
+  color: antiquewhite;
+  text-align: center;
+  padding-top: 20px;
+  font-size: 30px;
+}
+.btn {
+  font-size: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: transparent;
+  color: white;
+}
+.wrap {
+  margin-top: 10px;
+}
+.comment {
+  color: gray;
+}
+.posting {
+  width: 400px;
+  margin: auto;
+  padding-top: 10px;
+  display: none;
+}

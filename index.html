@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>127 홈마 사진 평점 모음집</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" type="text/css" href="../css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+
+
+
+    function show() {
+
+      $("#postbox").show()
+
+    }
+
+
+
+    function hide() {
+
+      $("#postbox").hide()
+
+    }
+
+
+
+    window.onload = function () {
+      show_order();
+      weather();
+    };
+
+    function show_order() {
+      $.ajax({
+        type: "GET",
+        url: "/127",
+        data: {},
+        success: function (response) {
+          let rows = response['ncts']
+          for (let i = 0; i < rows.length; i++) {
+            let url = rows[i]['url']
+            let star = rows[i]['star']
+            let comment = rows[i]['comment']
+
+            let star_number = '⭐'.repeat(star)
+
+            let temp_html = `<div class="col">
+
+                      <div class="card h-100">
+
+                        <img
+                          src="${url}"
+                          class="card-img-top" alt="...">
+
+                        <div class="card-body">
+
+                          <p>${star_number}</p>
+
+
+                          <p class="comment">${comment}</p>
+
+                        </div>
+
+                      </div>
+
+                      </div>`
+            $("#cards").append(temp_html)
+          }
+        }
+      })
+    }
+
+
+    function weather() {
+
+      $.ajax({
+
+        type: "GET",
+
+        url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
+
+        data: {},
+
+        success: function (response) {
+
+          let temp = response["temp"]
+
+          $("#temp").text(temp)
+
+        }
+
+      })
+
+    };
+
+
+    function listing() {
+
+      let url = $('#url').val();
+
+      let star = $('#star').val();
+
+      let comment = $('#comment').val();
+
+
+
+      $.ajax({
+
+        type: "POST",
+
+        url: "/127",
+
+        data: { url_give: url, star_give: star, comment_give: comment },
+
+        success: function (response) {
+
+          alert(response["msg"]);
+
+          window.location.reload();
+
+        },
+
+      })
+
+    }
+
+  </script>
+
+</head>
+
+<body>
+
+  <div class="post-box">
+
+    <h1>우리칠 사진 모음집</h1>
+
+    <button onclick="show()" class="btn">사진기록하기</button>
+
+    <p>현재온도 : <span id="temp">00.0</span>도</p>
+
+  </div>
+
+  <div class="posting" id="postbox">
+
+    <div class="form-floating mb-3">
+
+      <input type="email" class="form-control" id="url" placeholder="name@example.com">
+
+      <label for="floatingInput">이미지 url</label>
+
+    </div>
+
+    <div class="form-floating">
+
+      <select class="form-select" id="star" aria-label="Floating label select example">
+
+        <option selected>별점 매기기</option>
+
+        <option value="1">⭐️</option>
+
+        <option value="2">⭐️⭐️</option>
+
+        <option value="3">⭐️⭐️⭐️</option>
+
+        <option value="4">⭐️⭐️⭐️⭐️</option>
+
+        <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+
+      </select>
+
+      <label for="floatingSelect">Works with selects</label>
+
+    </div>
+
+    <div class="form-floating">
+
+      <textarea class="form-control" placeholder="Leave a comment here" id="comment" style="height: 100px"></textarea>
+
+      <label for="floatingTextarea2">Comments</label>
+
+    </div>
+
+    <button onclick="listing()" type="button" class="btn btn-primary">등록하기</button>
+
+    <button type="button" class="btn btn-primary" onclick="hide()">닫기</button>
+
+  </div>
+
+  <div class="wrap">
+
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards">
+
+
+
+    </div>
+
+  </div>
+
+  </div>
+
+</body>
+
+</html>
